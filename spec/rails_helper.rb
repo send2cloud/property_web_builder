@@ -38,7 +38,7 @@ RSpec.configure do |config|
   config.fixture_path = "#{Pwb::Engine.root}/spec/fixtures"
   # above used by fixture_file_upload
   # eg in:
-  # /Users/etewiah/Ed/sites-2016-oct-pwb/pwb/spec/services/pwb/import_properties_spec.rb
+  # /pwb/spec/services/pwb/import_properties_spec.rb
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
@@ -65,7 +65,7 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 
-  [:controller, :view, :request].each do |type|
+  %i[controller view request].each do |type|
     config.include ::Rails::Controller::Testing::TestProcess, type: type
     config.include ::Rails::Controller::Testing::TemplateAssertions, type: type
     config.include ::Rails::Controller::Testing::Integration, type: type

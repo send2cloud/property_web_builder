@@ -15,20 +15,29 @@ module Pwb
       expect(es_translations.count).to be > 0
     end
 
-    it 'creates a landing page hero entry' do
-      expect(Pwb::Content.find_by_key('landingCarousel1')).to be_present
+    # it 'creates a landing page hero entry' do
+    #   expect(Pwb::Content.find_by_key('landingCarousel1')).to be_present
+    # end
+
+    # it 'creates an about_us entry' do
+    #   expect(Pwb::Content.find_by_key('aboutUs')).to be_present
+    # end
+
+    # it 'creates 3 content-area-cols' do
+    #   expect(Pwb::Content.where(tag: 'content-area-cols').count).to eq(3)
+    # end
+
+    it 'creates 2 Users' do
+      expect(Pwb::User.count).to eq(2)
     end
 
-    it 'creates an about_us entry' do
-      expect(Pwb::Content.find_by_key('aboutUs')).to be_present
+    it 'creates 6 prop entries' do
+      expect(Pwb::Prop.count).to eq(6)
     end
 
-    it 'creates 3 content-area-cols' do
-      expect(Pwb::Content.where(tag: 'content-area-cols').count).to eq(3)
-    end
-
-    it 'creates 4 prop entries' do
-      expect(Pwb::Prop.count).to eq(4)
-    end
+    # Db is cleaned after each test in spec_helper
+    # after(:all) do
+    #   DatabaseCleaner.clean_with(:truncation)
+    # end
   end
 end

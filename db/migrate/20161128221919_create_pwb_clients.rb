@@ -1,3 +1,4 @@
+# spt 2017 - superseeded by contacts
 class CreatePwbClients < ActiveRecord::Migration[5.0]
   def change
     create_table :pwb_clients do |t|
@@ -14,7 +15,7 @@ class CreatePwbClients < ActiveRecord::Migration[5.0]
       t.integer :documentation_type
       t.integer :user_id
       t.integer :address_id
-      t.integer :flags, :null => false, :default => 0
+      t.integer :flags, null: false, default: 0
       t.json :details, default: {}
 
       t.timestamps null: false

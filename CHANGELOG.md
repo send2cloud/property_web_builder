@@ -3,7 +3,35 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 1.4.0 / 2020-02-09
+
+* Enable geocoding of addresses with geocoder gem
+* Add support for facebook authentication using omniauth
+* Fix issue with sending emails (#48)
+* Add Dutch, Korean, Polish, Bulgarian and Romanian translations
+* Fix issue with updating logo
+* Update Loofah gem to address CVE-2018-8048
+
+## 1.3.0 / 2017-12-04
+
+* New CMS functionality (#22)
+* Add Portuguese as an admin language
+* Add preset color palettes
+* Require Rails 5.1.0 or above
+* Fix issue with seeding content (#38)
+* Add Italian translations
+* Use property-web-scraper to import from web pages
+
+## 1.2.0 / 2017-08-23
+
+* Add Vue.js
+* Add search results map
+* Display infowindow on maps
+* Add social sharing buttons
+* Add Turkish and Vietnamese translations
 * Fix Rails 5.1.0 issue with seed task (#29)
+* Fix language picker redirecting to root
+* Set open graph meta tags
 * Support Rails 5.1.0
 
 ## 1.1.1 / 2017-07-25

@@ -5,7 +5,17 @@ AllCops:
     - 'bin/rspec'
     - 'vendor/**/*'
     - 'spec/dummy/**/*'
+    - 'db/migrate'
   TargetRubyVersion: 2.1
+
+
+Layout/EmptyLines:
+  Enabled: false
+
+
+# Ed - Jan 2018: Below was creating erroneous fixes
+Layout/MultilineHashBraceLayout:
+  Enabled: false
 
 # Sometimes I believe this reads better
 # This also causes spacing issues on multi-line fixes
@@ -17,7 +27,7 @@ Style/ClassVars:
   Enabled: false
 
 # We need these names for backwards compatability
-Style/PredicateName:
+Naming/PredicateName:
   Enabled: false
 
 # This has been used for customization
@@ -42,34 +52,34 @@ Performance/Count:
 Lint/EndAlignment:
   Enabled: false
 
-Style/ElseAlignment:
+Layout/ElseAlignment:
   Enabled: false
 
-Style/IndentationWidth:
+Layout/IndentationWidth:
   Enabled: false
 
-Style/AlignParameters:
+Layout/AlignParameters:
   Enabled: false
 
-Style/ClosingParenthesisIndentation:
+Layout/ClosingParenthesisIndentation:
   Enabled: false
 
 Style/CollectionMethods:
   Enabled: false
 
-Style/MultilineMethodCallIndentation:
+Layout/MultilineMethodCallIndentation:
   Enabled: false
 
-Style/IndentArray:
+Layout/IndentArray:
   Enabled: false
 
-Style/IndentHash:
+Layout/IndentHash:
   Enabled: false
 
-Style/AlignHash:
+Layout/AlignHash:
   Enabled: false
 
-Style/AccessorMethodName:
+Naming/AccessorMethodName:
   Enabled: false
 
 Style/Alias:
@@ -88,7 +98,7 @@ Style/Documentation:
   Enabled: false
   StyleGuide: http://relaxed.ruby.style/#styledocumentation
 
-Style/DotPosition:
+Layout/DotPosition:
   Enabled: false
   StyleGuide: http://relaxed.ruby.style/#styledotposition
 
@@ -159,14 +169,14 @@ Style/SingleLineMethods:
   Enabled: false
   StyleGuide: http://relaxed.ruby.style/#stylesinglelinemethods
 
-Style/SpaceBeforeBlockBraces:
+Layout/SpaceBeforeBlockBraces:
   Enabled: false
   StyleGuide: http://relaxed.ruby.style/#stylespacebeforeblockbraces
 
-Style/SpaceInsideHashLiteralBraces:
+Layout/SpaceInsideHashLiteralBraces:
   Enabled: false
 
-Style/SpaceInsideParens:
+Layout/SpaceInsideParens:
   Enabled: false
   StyleGuide: http://relaxed.ruby.style/#stylespaceinsideparens
 
@@ -196,7 +206,7 @@ Lint/AssignmentInCondition:
 # We use eval to get the correct url proxy object of engines in:
 # - app/helpers/alchemy/admin/navigation_helper.rb:139
 # - lib/alchemy/resources_helper.rb:24
-Lint/Eval:
+Security/Eval:
   Exclude:
     - app/helpers/alchemy/admin/navigation_helper.rb
     - lib/alchemy/resources_helper.rb

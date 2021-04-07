@@ -5,9 +5,9 @@ module Pwb
     skip_before_action :ensure_valid_accept_media_type
 
     # def set_default_currency
-    #   binding.pry
     #   @model
     # end
+
 
     def bulk_create
       propertiesJSON = params["propertiesJSON"]
@@ -17,21 +17,46 @@ module Pwb
       new_props = []
       existing_props = []
       errors = []
-
-      propertiesJSON.each do |propertyJSON|
+      properties_params(propertiesJSON).each_with_index do |property_params, index|
+        propertyJSON = propertiesJSON[index]
         if Pwb::Prop.where(reference: propertyJSON["reference"]).exists?
-          existing_props.push propertyJSON
+          existing_props.push Pwb::Prop.find_by_reference propertyJSON["reference"]
+          # propertyJSON
         else
           begin
-            new_prop = Pwb::Prop.create propertyJSON.except "extras", "property_photos"
-            if propertyJSON["extras"]
-              new_prop.set_extras=propertyJSON["extras"]
+            new_prop = Pwb::Prop.create(property_params)
+            # new_prop = Pwb::Prop.create(propertyJSON.except("features", "property_photos", "image_urls", "last_retrieved_at"))
+
+            # create will use website defaults for currency and area_unit
+            # need to override that
+            if propertyJSON["currency"]
+              new_prop.currency = propertyJSON["currency"]
+              new_prop.save!
             end
+            if propertyJSON["area_unit"]
+              new_prop.area_unit = propertyJSON["area_unit"]
+              new_prop.save!
+            end
+
+            # TODO - go over supported locales and save title and description
+            # into them
+
+            # if propertyJSON["features"]
+            # TODO - process feature (currently not retrieved by PWS so not important) 
+            #   new_prop.set_features=propertyJSON["features"]
+            # end
             if propertyJSON["property_photos"]
-              propertyJSON["property_photos"].each do |property_photo|
+              # uploading images can slow things down so worth setting a limit
+              max_photos_to_process = 20
+              # TODO - retrieve above as a param
+              propertyJSON["property_photos"].each_with_index do |property_photo, index|
+                if index > max_photos_to_process
+                  return
+                end
                 photo = PropPhoto.create
                 photo.sort_order = property_photo["sort_order"] || nil
-                photo.remote_image_url = property_photo["image"]["url"] || property_photo["url"]
+                photo.remote_image_url = property_photo["url"]
+                # photo.remote_image_url = property_photo["image"]["url"] || property_photo["url"]
                 photo.save!
                 new_prop.prop_photos.push photo
               end
@@ -39,7 +64,6 @@ module Pwb
 
             new_props.push new_prop
           rescue => err
-            # binding.pry
             errors.push err.message
             # logger.error err.message
           end
@@ -53,9 +77,11 @@ module Pwb
       }
     end
 
+    # TODO: rename to update_features:
     def update_extras
       property = Prop.find(params[:id])
-      property.set_extras = params[:extras]
+      # The set_features method goes through ea
+      property.set_features = params[:extras].to_unsafe_hash
       property.save!
       return render json: property.features
     end
@@ -152,5 +178,28 @@ module Pwb
     #   return render json: "success"
     # end
 
+    private
+
+    def properties_params propertiesJSON
+      # propertiesJSON = params["propertiesJSON"]
+      # unless propertiesJSON.is_a? Array
+      #   propertiesJSON = JSON.parse propertiesJSON
+      # end
+      # pp = ActionController::Parameters.new(propertiesJSON)
+      pp = ActionController::Parameters.new({propertiesJSON: propertiesJSON})
+      # https://github.com/rails/strong_parameters/issues/140
+      # params.require(:propertiesJSON).map do |p|
+      pp.require(:propertiesJSON).map do |p|
+        p.permit(
+          :title, :description,
+          :reference, :street_address, :city,
+          :postal_code, :price_rental_monthly_current,
+          :for_rent_short_term, :visible,
+          :count_bedrooms, :count_bathrooms,
+          :longitude, :latitude
+        )
+        # ActionController::Parameters.new(p.to_hash).permit(:title, :description)
+      end
+    end
   end
 end

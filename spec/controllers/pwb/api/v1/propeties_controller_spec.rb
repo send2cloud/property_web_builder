@@ -12,14 +12,14 @@ module Pwb
 
       describe 'bulk create' do
         it 'creates multiple properties' do
-          propertiesJSON =  {
+          bulk_create_params = {
             propertiesJSON: bulk_create_input
           }
 
 
           expect{
-            post :bulk_create, params: propertiesJSON
-          }.to change(Prop,:count).by(4)
+            post :bulk_create, params: bulk_create_params
+          }.to change(Prop, :count).by(4)
           expect(response.status).to eq(200)
           expect(response.content_type).to eq('application/json')
 
